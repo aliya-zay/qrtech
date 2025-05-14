@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Избранные QR-коды</title>
+    <style>
+        /* Стили для страницы */
+        body {
+            font-family: 'Montserrat';
+            margin: 0;
+            padding: 0;
+            background-color: #203541;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #203541;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+        }
+
+        #my-favorite-qr-codes-container { /* Изменили ID контейнера */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding-top: 20px;
+            background-color: #203541;
+        }
+
+        .qr-code-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            width: 200px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+        }
+
+        .qr-code-item img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .qr-code-item h3 {
+            margin-bottom: 5px;
+            font-size: 1.2em;
+        }
+
+        .qr-code-item p {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .favorite-button { /* Стили для кнопки-звездочки */
+            background: none;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            color: #ffc107;
+        }
+
+        .back-button {
+    font-size: 32px; /* Размер стрелки */
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+    position: absolute; /* Абсолютное позиционирование */
+    top: 20px; /* Отступ сверху */
+    left: 20px; /* Отступ слева */
+}
+
+.back-button:hover {
+    color: #B9D043; /* Например, синий при наведении */
+}
+
+/* Стили для поисковой строки */
+
+#search-button {
+    padding: 10px 15px;
+    border-radius: 86px;
+    border: none;
+    background-color: #B9D043;; /* Синий цвет */
+    color: black;
+    cursor: pointer;
+    margin-left: 5px; /* Отступ слева от поля поиска */
+}
+
+#search-button:hover {
+    background-color: #e4f39a; /* Более темный синий при наведении */
+}
+
+#search-input {
+    padding: 10px;
+    border-radius: 86px;
+    border: 1px solid #ccc;
+    width: 700px; /* Или другая желаемая ширина */
+    margin-left: 300px;
+}
+
+.logout-button {
+    background-color: #B9D043;
+    border: none;
+    border-radius: 86px;
+    padding: 10px 15px;
+    margin-left: 10px;
+    color: black;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background-color:#e4f39a;
+}
+
+
+
+
+
+    </style>
+</head>
+<body>
+
+
+
+    <div class="container">
+        <h1>Избранные QR-коды</h1>
+        <div class="search-and-sort">  <!-- Новый контейнер -->
+            <input type="text" id="search-input" placeholder="Поиск по названию">
+            <button id="search-button">Найти</button>
+            <button id="logout-button" class="logout-button">Выйти</button>
+            <div class="sort-container">
+                <a href="#" class="back-button" onclick="goBack()">&#8592;</a>
+            </div>
+        </div>
+        <div id="my-favorite-qr-codes-container"> <!-- Изменили ID контейнера -->
+            <!-- Здесь будут отображаться QR-коды -->
+        </div>
+    </div>
+
+
+    <script src="script-favorites.js"></script> <!-- Подключаем новый файл script-favorites.js -->
+</body>
+</html>
+

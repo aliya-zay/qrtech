@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration and Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #203541;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #354751;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            color: white;
+        }
+
+        h2 {
+            text-align: center;
+            color: white;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 26px;
+            background-color: #B9D043;
+            color: black;
+            border: none;
+            border-radius: 86px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #e4f39a;
+        }
+
+        .success-message {
+            color: green;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .form-toggle {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .form-toggle a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .form-toggle a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="registrationFormContainer">
+            <h2>Registration</h2>
+            <form id="registrationForm">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+
+                <label>
+                    <input type="checkbox" id="termsCheckbox">
+                    Я согласен(-на) с <a href="user-agreement.pdf" target="_blank" style="color: #B9D043;">пользовательским соглашением</a>
+                </label>
+
+                
+                <button type="submit" id="registerBtn" disabled>Register</button>
+            </form>
+        </div>
+
+        <div id="loginFormContainer" style="display: none;">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <label for="email">Email:</label>
+                <input type="email" id="loginEmail" name="email" required>
+
+                <label for="password">Password:</label>
+                <input type="password" id="loginPassword" name="password" required>
+
+                <button type="submit">Login</button>
+            </form>
+        </div>
+
+        <div class="form-toggle">
+            <a href="#" id="toggleLink">Switch to Login</a>
+        </div>
+
+        <p id="successMessage" class="success-message" style="display:none;">Registration successful!</p>
+        <p id="errorMessage" class="error-message" style="display:none;"></p>
+        <p id="loginSuccessMessage" class="success-message" style="display:none;">Login successful!</p>
+        <p id="loginErrorMessage" class="error-message" style="display:none;"></p>
+    </div>
+
+    <script>
+        const registrationForm = document.getElementById('registrationForm');
+        const loginForm = document.getElementById('loginForm');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        const loginSuccessMessage = document.getElementById('loginSuccessMessage');
+        const loginErrorMessage = document.getElementById('loginErrorMessage');
+        const toggleLink = document.getElementById('toggleLink');
+        const registrationFormContainer = document.getElementById('registrationFormContainer');
+        const loginFormContainer = document.getElementById('loginFormContainer');
+
+        toggleLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (registrationFormContainer.style.display !== 'none') {
+                registrationFormContainer.style.display = 'none';
+                loginFormContainer.style.display = 'block';
+                toggleLink.textContent = 'Switch to Registration';
+            } else {
+                registrationFormContainer.style.display = 'block';
+                loginFormContainer.style.display = 'none';
+                toggleLink.textContent = 'Switch to Login';
+            }
+        });
+
+        registrationForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(registrationForm);
+            const data = Object.fromEntries(formData);
+
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    successMessage.style.display = 'block';
+                    errorMessage.style.display = 'none';
+                    registrationForm.reset();
+                } else {
+                    errorMessage.textContent = result.message || 'Registration failed.';
+                    errorMessage.style.display = 'block';
+                    successMessage.style.display = 'none';
+                }
+            } catch (error) {
+                errorMessage.textContent = 'Network error. Please try again.';
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+            }
+        });
+
+
+
+
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(loginForm);
+            const data = Object.fromEntries(formData);
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    loginSuccessMessage.style.display = 'block';
+                    loginErrorMessage.style.display = 'none';
+                    loginForm.reset();
+                    // Перенаправляем пользователя на страницу qr-generator
+                    window.location.href = result.redirect;
+                } else {
+                    loginErrorMessage.textContent = result.message || 'Login failed.';
+                    loginErrorMessage.style.display = 'block';
+                    loginSuccessMessage.style.display = 'none';
+                }
+            } catch (error) {
+                loginErrorMessage.textContent = 'Network error. Please try again.';
+                loginErrorMessage.style.display = 'block';
+                loginSuccessMessage.style.display = 'none';
+            }
+        });
+
+        const termsCheckbox = document.getElementById('termsCheckbox');
+        const registerBtn = document.getElementById('registerBtn');
+
+        termsCheckbox.addEventListener('change', () => {
+            registerBtn.disabled = !termsCheckbox.checked;
+        });
+
+
+
+
+
+        
+    </script>
+</body>
+</html>

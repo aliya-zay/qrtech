@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+    <title>QR Code Generator</title>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #203541;
+            color: #ecf0f1;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            padding: 20px;
+            box-sizing: border-box;
+            margin: 0 auto;
+            /* Центрируем container по горизонтали */
+            text-align: center;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .header img {
+            width: 218.5284423828125px;
+            height: 58.00006866455078px;
+        }
+
+        .rectangle {
+            width: 761px;
+            height: 1px;
+            background: #FFFFFF1A;
+            position: absolute;
+            top: 113px;
+            left: 0;
+            /* Относительно container */
+            right: 0;
+            /* Чтобы растянуть по ширине */
+            margin-left: auto;
+            /* Центрирование */
+            margin-right: auto;
+            /* Центрирование */
+        }
+
+
+        .qr-code-container {
+            width: 200px;
+            height: 200px;
+            background-color: white;
+
+            margin: 70px 480px;
+            /*position: relative; /* Важно для нормального потока */
+            display: block;
+        }
+
+        .qr-code-container img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .menu {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .links {
+            display: flex;
+            gap: 34px;
+            width: 700px;
+            height: 46px;
+            border-radius: 86px;
+            padding: 8px 26px;
+            background: #354751;
+            position: relative;
+            /* Важно для нормального потока */
+            margin: 0 auto;
+            /* Центрирование */
+        }
+
+        .links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 86px;
+            transition: background-color 0.3s ease;
+            width: 105px;
+            padding-top: 13px;
+        }
+
+        .links a:hover {
+            background-color: #848F95;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+            position: absolute;
+            top: 22px;
+            right: 30px;
+            /* Относительно container */
+        }
+
+        .buttons a {
+            display: block;
+            color: #fff;
+            height: 37px;
+            border-radius: 86px;
+            border: 1px solid #FFFFFFCC;
+            padding: 10px 26px;
+            text-align: center;
+            box-sizing: border-box;
+            text-decoration: none;
+        }
+
+        .buttons a:hover {
+            background-color: #B9D043;
+        }
+
+        .input-area {
+            text-align: center;
+            width: 100%;
+            /* Занимает всю ширину контейнера */
+            position: relative;
+            /* Важно для нормального потока */
+            margin-top: 20px;
+            /* Добавляем отступ от меню links */
+        }
+
+
+
+        .input-area button {
+            width: 250px;
+            height: 44px;
+            border-radius: 86px;
+            font-family: 'Montserrat', sans-serif;
+            padding: 10px 26px;
+            background-color: #B9D043;
+            box-sizing: border-box;
+            cursor: pointer;
+            border: none;
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 100%;
+            letter-spacing: 0%;
+            text-align: center;
+            color: #fff;
+            margin-top: 20px;
+        }
+
+        .design {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .links2 {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 211px;
+            height: 226px;
+            border-radius: 19px;
+            padding: 26px 26px;
+            background: #354751;
+            position: relative;
+            /* Важно для нормального потока */
+            margin: 40px 0px;
+            /* Центрирование */
+        }
+
+        .links2 a {
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 86px;
+            transition: background-color 0.3s ease;
+            width: 187px;
+            padding-top: 13px;
+            padding-bottom: 13px;
+            margin-top: 10px;
+        }
+
+        .links2 a:hover {
+            background-color: #848F95;
+        }
+
+        .settings-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+#logo-settings {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #354751;
+    padding: 20px;
+    border-radius: 19px;
+    margin-top: 20px;
+    width: 350px;
+    height: 100px;
+}
+
+#logo-settings input[type="file"] {
+    background-color: #203541;
+    color: #ecf0f1;
+    border: 1px solid #fff;
+    border-radius: 10px;
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#logo-settings button {
+    background-color: #B9D043;
+    border: none;
+    border-radius: 86px;
+    color: #fff;
+    font-weight: 600;
+    padding: 10px 20px;
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+    width: 100%;
+    margin-left: 10px;
+}
+
+
+        .color-settings {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            bottom: 250px;
+
+
+        }
+
+        .color-palette {
+            width: 200px;
+            text-align: center;
+            margin-left: 30px;
+        }
+
+        .color-palette label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .color-palette input {
+            width: 150px;
+            height: 100px;
+        }
+
+
+        .color-palette input[type="range"] {
+            width: 200px;
+            -webkit-appearance: none;
+            /* Убираем стандартный вид ползунка */
+            appearance: none;
+            /* Добавляем для Firefox */
+            height: 5px;
+            /* Задаем высоту */
+            background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+            /* Цвета радуги */
+            outline: none;
+            /* Убираем обводку при фокусе */
+            margin: 0;
+            cursor: pointer;
+        }
+
+        /* Для Chrome и Safari */
+        .color-palette input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            /* Добавляем для Chrome/Safari */
+            width: 15px;
+            height: 15px;
+            background: #fff;
+            /* Цвет бегунка */
+            border: 1px solid #000;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            top: -5px;
+            /* Сдвигаем бегунок вверх */
+        }
+
+        /* Для Firefox */
+        .color-palette input[type="range"]::-moz-range-thumb {
+            appearance: none;
+            /* Добавляем для Firefox */
+            width: 15px;
+            height: 15px;
+            background: #fff;
+            border: 1px solid #000;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+
+        /* Add this style to show and hide color settings */
+        #color-settings,
+        #logo-settings {
+            display: none;
+            flex-direction: row;
+            /* Располагаем элементы в строку */
+            justify-content: center;
+            /* Центрируем элементы по горизонтали */
+            align-items: center;
+            /* Выравниваем элементы по вертикали */
+            margin-top: 320px;
+            margin-right: 280px;
+        }
+
+        #color-settings.show,
+        #logo-settings.show {
+            display: flex;
+        }
+
+        #logo-settings {
+            display: none;
+            flex-direction: row;
+            /* Располагаем элементы в строку */
+            justify-content: center;
+            /* Центрируем элементы по горизонтали */
+            align-items: center;
+            /* Выравниваем элементы по вертикали */
+            margin-top: 70px;
+            margin-right: 370px;
+        }
+
+        /* Стили для скрытия/отображения блоков полей */
+        .input-group {
+            margin-bottom: 10px;
+        }
+
+        #text-fields input,
+        #link-fields input,
+            /* Изменено */
+        #wifi-fields input,
+        #wifi-fields select,
+        #phone-fields input,
+        #map-fields input,
+        #vcard-fields input {
+            /* Добавили стиль для полей визитки */
+            width: 565px;
+            height: 44px;
+            border-radius: 86px;
+            border: 1px solid #354751;
+            font-family: 'Montserrat', sans-serif;
+            padding: 10px 26px;
+            box-sizing: border-box;
+            color: #fff;
+            background-color: #354751;
+            margin-bottom: 10px;
+        }
+
+        /*всплывающее окно*/
+        .template-popup {
+            position: fixed;
+            /* Фиксированное позиционирование */
+            top: 0;
+            right: 0;
+            width: 500px;
+            /* Ширина окна */
+            height: 100%;
+            /* Высота на весь экран */
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Полупрозрачный фон */
+            z-index: 1000;
+            /* Поверх всего */
+            display: none;
+            /* Скрыто по умолчанию */
+            overflow-y: auto;
+        }
+
+        .template-popup.show {
+            display: block;
+            /* Отображаем окно */
+            background-color: #354751;
+        }
+
+        .template-popup-content {
+            position: relative;
+            margin: 10% auto;
+            /* Центрируем окно */
+            padding: 20px;
+            width: 80%;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .template-item {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .template-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown .dropbtn {
+            background-color: #354751;
+            color: white;
+            padding: 14px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            border-radius: 19px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            border-radius: 0;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        #form-panel {
+    display: none; /* Скрыт по умолчанию */
+    position: absolute;
+    top: 60px;
+    left: 450px;
+    z-index: 1000;
+    background-color: #354751;
+    padding: 10px;
+    border-radius: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    width: 250px;
+}
+
+/* Показываем только когда есть класс show */
+#form-panel.show {
+    display: flex;
+}
+
+
+
+
+.form-button {
+    background-color: transparent; /*  Прозрачный фон */
+    border: none; /*  Убираем рамку */
+    cursor: pointer;
+    width: 40px; /*  Ширина кнопки */
+    height: 40px; /*  Высота кнопки */
+    padding: 0; /*  Убираем отступы */
+}
+
+.form-button img {
+    max-width: 100%; /*  Изображение занимает всю ширину кнопки */
+    max-height: 100%; /*  Изображение занимает всю высоту кнопки */
+    display: block; /*  Убираем лишние отступы у изображения */
+}
+
+.hidden {
+    display: none; /*  Скрываем элемент */
+}
+
+.background-blur-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background:
+        radial-gradient(600px at 25% 25%, rgba(150, 170, 255, 0.12), transparent 70%),  /* серо-синий */
+        radial-gradient(700px at 75% 60%, rgba(180, 150, 255, 0.1), transparent 80%),   /* серо-фиолетовый */
+        radial-gradient(500px at 50% 85%, rgba(100, 120, 200, 0.08), transparent 85%);  /* тёмно-синий */
+    animation: floatBlur 20s ease-in-out infinite;
+    z-index: 0;
+    pointer-events: none;
+    transform: scale(1.02);
+    opacity: 1;
+}
+
+@keyframes floatBlur {
+    0% {
+        background-position: 25% 25%, 75% 60%, 50% 85%;
+        transform: scale(1.02);
+    }
+    50% {
+        background-position: 30% 30%, 70% 65%, 55% 80%;
+        transform: scale(1.05);
+    }
+    100% {
+        background-position: 25% 25%, 75% 60%, 50% 85%;
+        transform: scale(1.02);
+    }
+}
+
+
+.logout-button {
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    border-radius: 86px;
+    padding: 10px 26px;
+    text-decoration: none;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background-color: #B9D043;
+    color: black;
+}
+
+
+.shape-button {
+    width: 40px;
+    height: 40px;
+    background-color: #B9D043;
+    border: none;
+    cursor: pointer;
+    position: relative;
+}
+
+/* Круг */
+.shape-circle {
+    border-radius: 50%;
+}
+
+/* Скругленный квадрат */
+.shape-rounded-square {
+    border-radius: 10px;
+}
+
+/* Крест */
+.shape-cross {
+    background-color: transparent;
+}
+.shape-cross::before,
+.shape-cross::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 30px;
+    height: 4px;
+    background-color: #B9D043;
+    transform-origin: center;
+}
+.shape-cross::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+.shape-cross::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* Шестиугольник */
+.shape-hexagon {
+    clip-path: polygon(
+        50% 0%, 93% 25%, 93% 75%,
+        50% 100%, 7% 75%, 7% 25%
+    );
+}
+
+/*FAQ*/
+
+.faq-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.faq-item {
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+
+.faq-question {
+    width: 430;
+    height: 39;
+    padding: 10px;
+    text-align: center;
+    font-size: 32px;
+}
+
+
+.faq-answer {
+    padding: 10px;
+    margin-top: 5px;
+    text-align: center;
+    width: 922px;
+    height: 144px;
+
+}
+
+.hidden {
+    display: none;
+}
+
+
+
+
+
+
+
+
+    </style>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="background-blur-layer"></div>
+    <div class="container">
+        <div class="header">
+            <img src="images/Group 1312391171.png" alt="">
+        </div>
+        <div class="rectangle"></div>
+        <div class="menu">
+            <div class="links">
+                <a id="link-button">Ссылка</a>
+                <a id="wifi-button">wi-fi</a>
+                <a id="phone-button">Телефон</a>
+                <a id="map-button">Карта</a>
+                <a id="text-button">Текст</a>
+                <a id="vcard-button">Визитка</a>
+            </div>
+            <div class="buttons">
+                <a id="my-qrcodes-button">Мои QR коды</a>
+                <a>Задать вопрос</a>
+                <a href="#" id="logout-button" class="logout-button">Выйти</a>
+            </div>
+        </div>
+
+        <div id="qr-code-container" class="qr-code-container">
+        </div>
+
+        <div class="input-area">
+            <!-- Link fields -->
+            <div id="link-fields" class="hidden">
+                <input type="text" id="link-title" placeholder="Название QR-кода (необязательно)">
+                <input type="url" id="link-url" placeholder="Введите URL">
+                <button class="generate-qr-button">Создать QR</button>
+            </div>
+
+            <!-- Wi-Fi fields -->
+            <div id="wifi-fields" class="hidden">
+                <input type="text" id="wifi-title" placeholder="Название QR-кода (необязательно)">
+                <input type="text" id="wifi-ssid" placeholder="Имя сети (SSID)">
+                <input type="password" id="wifi-password" placeholder="Пароль">
+                <select id="wifi-encryption">
+                    <option value="WPA">WPA/WPA2</option>
+                    <option value="WEP">WEP</option>
+                    <option value="None">Нет</option>
+                </select>
+                <button class="generate-qr-button">Создать QR</button>
+            </div>
+
+            <!-- Text fields -->
+            <div id="text-fields" class="hidden">
+                <input type="text" id="text-title" placeholder="Название QR-кода (необязательно)">
+                <input type="text" id="text-text" placeholder="Введите текст">
+                <button class="generate-qr-button">Создать QR</button>
+            </div>
+
+            <!-- Phone fields -->
+            <div id="phone-fields" class="hidden">
+                <input type="text" id="phone-title" placeholder="Название QR-кода (необязательно)">
+                <input type="tel" id="phone-number" placeholder="Введите номер телефона">
+                <button class="generate-qr-button">Создать QR</button>
+            </div>
+
+            <!-- Map fields -->
+            <div id="map-fields" class="hidden">
+                <input type="text" id="map-title" placeholder="Название QR-кода (необязательно)">
+                <input type="text" id="map-latitude" placeholder="Широта">
+                <input type="text" id="map-longitude" placeholder="Долгота">
+                <button class="generate-qr-button">Создать QR</button>
+            </div>
+
+            <!-- vCard fields -->
+            <div id="vcard-fields" class="hidden">
+                <input type="text" id="vcard-title" placeholder="Название QR-кода (необязательно)">
+                <input type="text" id="vcard-firstName" placeholder="Имя (обязательно)">
+                <input type="text" id="vcard-lastName" placeholder="Фамилия (обязательно)">
+                <input type="tel" id="vcard-phone" placeholder="Телефон">
+                <input type="email" id="vcard-email" placeholder="Email">
+                <input type="text" id="vcard-company" placeholder="Компания">
+                <input type="text" id="vcard-jobTitle" placeholder="Должность">
+                <input type="text" id="vcard-street" placeholder="Улица и дом">
+                <input type="text" id="vcard-city" placeholder="Город">
+                <input type="text" id="vcard-country" placeholder="Страна">
+                <input type="text" id="vcard-postalCode" placeholder="Индекс">
+                <button class="generate-qr-button">Создать QR</button>
+            </div>
+
+            <button id="save-qr-button" class="hidden">Сохранить QR</button>  <!-- Add this line -->
+
+
+        </div>
+
+        <div class="design">
+            <div class="settings-panel">
+                <div class="links2">
+                    <div class="dropdown">
+                        <a id="color-button" class="dropbtn">Настройки цвета</a>
+                        <div id="color-dropdown" class="dropdown-content hidden">
+                            <a id="simple-design">Простая настройка</a>
+                            <a id="gradient-design">Градиент</a>
+                        </div>
+                    </div>
+                    <a id="form">Настройки формы</a>
+                    <div id="form-panel" class="">
+                        <p>Выберите форму маркеров</p>
+                        <button class="shape-button shape-square" data-shape="square" title="Квадрат"></button>
+                        <button class="shape-button shape-circle" data-shape="circle" title="Круг"></button>
+                        <button class="shape-button shape-cross" data-shape="cross" title="Крест"></button>
+                        <button class="shape-button shape-rounded-square" data-shape="rounded-square" title="Скруг. квадрат"></button>
+                        <button class="shape-button shape-hexagon" data-shape="hexagon" title="Шестиугольник"></button>
+                      </div>                      
+                    <a id="logo-button">Добавить логотип</a>
+                    <a id="ready">Готовые варианты</a>
+                </div>
+            </div>
+
+            <div id="logo-settings" class="logo-settings hidden">
+                <input type="file" id="logo-upload" accept="image/*">
+                <button id="remove-logo">Удалить логотип</button>
+            </div>
+            
+        
+            <div id="color-settings" class="color-settings hidden">
+                <select id="design-type" style="display: none;">
+                    <option value="simple">Простой</option>
+                    <option value="gradient">Градиент</option>
+                </select>
+                <div class="color-palette">
+                    <label>Цвет переднего плана:</label>
+                    <div id="foreground-picker"></div>
+                  </div>
+                  <div class="color-palette" id="background-color-palette">
+                    <label>Цвет фона:</label>
+                    <div id="background-picker"></div>
+                  </div>
+                  <div class="color-palette hidden" id="gradient-color1-palette">
+                    <label>Цвет фона 1:</label>
+                    <div id="gradient1-picker"></div>
+                  </div>
+                  <div class="color-palette hidden" id="gradient-color2-palette">
+                    <label>Цвет фона 2:</label>
+                    <div id="gradient2-picker"></div>
+                  </div>
+                  
+                  <!-- скрытые input для хранения hex-цветов -->
+                  <input type="hidden" id="foreground-color" value="#000000">
+                  <input type="hidden" id="background-color" value="#ffffff">
+                  <input type="hidden" id="gradient-color1" value="#800080">
+                  <input type="hidden" id="gradient-color2" value="#FFA500">
+                  
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <div id="template-popup" class="template-popup hidden">
+        <div class="template-popup-content">
+            <span class="close-button">&times;</span>
+            <div class="template-grid">
+                <div class="template-item" data-template="1">
+                    <img src="images/qr-telegram.png" alt="Шаблон 1">
+                </div>
+                <div class="template-item" data-template="2">
+                    <img src="images/qr-vk.png" alt="Шаблон 2">
+                </div>
+                <div class="template-item" data-template="3">
+                    <img src="images/qr-instagram.png" alt="Шаблон 3">
+                </div>
+                <div class="template-item" data-template="4">
+                    <img src="images/qr-you-tube.png" alt="Шаблон 4">
+                </div>
+                <div class="template-item" data-template="5">
+                    <img src="images/qr-rutube.png" alt="Шаблон 5">
+                </div>
+                <div class="template-item" data-template="6">
+                    <img src="images/qr-tiktok.png" alt="Шаблон 6">
+                </div>
+                <div class="template-item" data-template="7">
+                    <img src="images/qr-whats'sapp.png" alt="Шаблон 7">
+                </div>
+                <div class="template-item" data-template="8">
+                    <img src="images/qr-facebook.png" alt="Шаблон 8">
+                </div>
+                <div class="template-item" data-template="9">
+                    <img src="images/qr-discord.png" alt="Шаблон 9">
+                </div>
+                <div class="template-item" data-template="10">
+                    <img src="images/qr-pinterest.png" alt="Шаблон 10">
+                </div>
+                <div class="template-item" data-template="11">
+                    <img src="images/qr-gmail.png" alt="Шаблон 11">
+                </div>
+                <!-- Добавьте другие шаблоны -->
+            </div>
+        </div>
+    </div>
+
+    <div class="faq-section">
+        <div class="faq-item">
+            <div class="faq-question">Как появились QR-коды?</div>
+            <div class="faq-answer hidden">QR-коды были разработаны в Японии в 1994 году компанией Denso Wave для отслеживания автозапчастей, а позже распространились в маркетинге, навигации и быстрой передаче информации.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Где применяются QR-коды?</div>
+            <div class="faq-answer hidden">QR-коды используют в рекламе, билетах, Wi-Fi, визитках, оплате и других цифровых сценариях. Они быстро считываются и передают данные через смартфон.</div>
+        </div>
+    </div>
+    
+    
+
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
