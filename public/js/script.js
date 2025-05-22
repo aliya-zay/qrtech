@@ -30,6 +30,7 @@ const gradientColor1Palette = document.getElementById("gradient-color1-palette")
 const gradientColor2Palette = document.getElementById("gradient-color2-palette");
 const readyButton = document.getElementById("ready");
 const templatePopup = document.getElementById("template-popup");
+const goToButton = document.querySelector(".go");
 
 const closeButton = document.querySelector(".close-button");
 const colorDropDown = document.getElementById("color-dropdown");
@@ -226,7 +227,7 @@ function generateQrCode(qrCodeText, title) {
     
 
     const qr = qrcode(0, 'H');
-    qr.addData(qrCodeTextValue);
+    qr.addData(unescape(encodeURIComponent(qrCodeTextValue)));
     qr.make();
 
     const qrCodeSize = qr.getModuleCount();
@@ -543,14 +544,14 @@ generateVcardQrButton.addEventListener("click", () => {
         return;
     }
 
-    let qrCodeText = `BEGIN:VCARD\nVERSION:3.0\nN:${lastName};${firstName};;;\nFN:${firstName} ${lastName}\n`;
+    let qrCodeText = `BEGIN:VCARD\nVERSION:3.0\nN;CHARSET=UTF-8:${lastName};${firstName};;;\nFN;CHARSET=UTF-8:${firstName} ${lastName}\n`;
 
-    if (phone) qrCodeText += `TEL:${phone}\n`;
-    if (email) qrCodeText += `EMAIL:${email}\n`;
-    if (company) qrCodeText += `ORG:${company}\n`;
-    if (jobTitle) qrCodeText += `TITLE:${jobTitle}\n`;
+    if (phone) qrCodeText += `TEL;CHARSET=UTF-8:${phone}\n`;
+    if (email) qrCodeText += `EMAIL;CHARSET=UTF-8:${email}\n`;
+    if (company) qrCodeText += `ORG;CHARSET=UTF-8:${company}\n`;
+    if (jobTitle) qrCodeText += `TITLE;CHARSET=UTF-8:${jobTitle}\n`;
     if (street || city || country || postalCode) {
-        qrCodeText += `ADR;TYPE=WORK:${street};${city};;${postalCode};${country}\n`;
+        qrCodeText += `ADR;CHARSET=UTF-8;TYPE=WORK:;;${street};${city};;${postalCode};${country}\n`;
     }
 
     qrCodeText += "END:VCARD";
@@ -887,4 +888,63 @@ const fgPicker = new iro.ColorPicker("#foreground-picker", {
         const answer = question.nextElementSibling;
         answer.classList.toggle("hidden");
     });
+});
+
+//перейти
+goToButton.addEventListener("click", function() {
+  // Код, который выполнится при клике
+  window.location.href = "https://every-tech.ru/"; // Замени на нужный URL
+});
+
+
+// === Question Popup ===
+const askQuestionButtons = document.querySelectorAll(".ask-question, #ask-question");
+const questionPopup = document.getElementById("questionPopup");
+const sendQuestionButton = document.getElementById("sendQuestion");
+const closeButton2 = document.querySelector(".close-button2");
+
+// Открытие popup окна при клике на кнопку "Задать вопрос"
+askQuestionButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        questionPopup.classList.add("show");
+    });
+});
+
+// Закрытие popup окна при клике на крестик
+closeButton2.addEventListener("click", () => {
+    questionPopup.classList.remove("show");
+});
+
+// Отправка вопроса
+sendQuestionButton.addEventListener("click", async () => {
+    const email = document.getElementById("email").value;
+    const question = document.getElementById("question").value;
+
+    if (!email || !question) {
+        alert("Пожалуйста, заполните все поля.");
+        return;
+    }
+
+    // Отправка данных на сервер
+    try {
+        const response = await fetch("/send-question", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, question }),
+        });
+
+        if (response.ok) {
+            alert("Ваш вопрос успешно отправлен!");
+            questionPopup.classList.remove("show");
+            document.getElementById("email").value = "";
+            document.getElementById("question").value = "";
+        } else {
+            alert("Произошла ошибка при отправке вопроса.");
+        }
+    } catch (error) {
+        console.error("Ошибка:", error);
+        alert("Произошла ошибка при отправке вопроса.");
+    }
 });

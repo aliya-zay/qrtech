@@ -194,9 +194,50 @@ app.post('/logout', (req, res) => {
   });
 });
 
+
+//задать вопрос - на почту
+
+const nodemailer = require('nodemailer');
+
+// Настройки Nodemailer
+const transporter = nodemailer.createTransport({
+    service: 'Gmail', // или другой почтовый сервис
+    auth: {
+        user: 'aliazajnieva439@gmail.com', // Замени на свою почту
+        pass: 'ufiw kuag thcw exud' // Замени на свой пароль или сгенерированный пароль приложения
+    }
+});
+
+// Обработчик для отправки вопроса
+app.post('/send-question', (req, res) => {
+    const { email, question } = req.body;
+
+    const mailOptions = {
+        from: 'aliazajnieva439@gmail.com', // Замени на свою почту
+        to: 'aliazajnieva439@gmail.com', // Замени на свою почту для получения запросов
+        subject: 'Новый вопрос с сайта',
+        text: `Вопрос от: ${email}\n\n${question}`
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log(error);
+            res.status(500).json({ message: 'Ошибка при отправке письма' });
+        } else {
+            console.log('Email отправлен: ' + info.response);
+            res.status(200).json({ message: 'Вопрос успешно отправлен' });
+        }
+    });
+});
+
+
+
 // Запуск сервера
 app.listen(port, () => {
   console.log(`🚀 Server is running at http://localhost:${port}`);
 });
+
+
+
 
 

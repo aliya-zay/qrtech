@@ -17,6 +17,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            padding-bottom: 500px;
         }
 
         .container {
@@ -638,6 +639,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 200px;
+    gap: 70px;
 }
 
 
@@ -654,6 +657,9 @@
     font-size: 32px;
 }
 
+.faq-question:hover{
+    color: #B9D043;
+}
 
 .faq-answer {
     padding: 10px;
@@ -661,6 +667,7 @@
     text-align: center;
     width: 922px;
     height: 144px;
+    font-size: 24px;
 
 }
 
@@ -668,9 +675,199 @@
     display: none;
 }
 
+.green-text {
+  color: #B9D043;
+}
 
+.services{
+    font-size: 32px;
+    margin-left: 569px;
+    margin-bottom: 50px;
+}
 
+.join-us{
+    width: 1244px;
+    height: 376px;
+    border-radius: 19px;
+    background-color: rgba(255, 255, 255, 0.1); /* Полностью прозрачный фон */
+    backdrop-filter: blur(5px);
+    margin-left: 338px;
+    margin-bottom: 100px;
 
+}
+
+.every-tech-pic{
+    margin-left: 43px;
+    margin-top: 49px;
+}
+
+.text-join-us{
+    font-size: 24px;
+    width: 583px;
+    height: 116px;
+    padding: 38px 43px;
+}
+
+.buttons2{
+    display: flex;
+    margin-left: 43px;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.go{
+    background-color: transparent;
+    display: flex; /* Меняем display */
+    align-items: center; /* Выравнивание по вертикали */
+    justify-content: center; /* Выравнивание по горизонтали */
+    color: #fff;
+    height: 37px;
+    border-radius: 86px;
+    border: 1px solid #FFFFFFCC;
+    padding: 10px 26px;
+    text-align: center;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.ask-question{
+    background-color: transparent;
+    display: flex; /* Меняем display */
+    align-items: center; /* Выравнивание по вертикали */
+    justify-content: center; /* Выравнивание по горизонтали */
+    color: #fff;
+    height: 37px;
+    border-radius: 86px;
+    border: 1px solid #FFFFFFCC;
+    padding: 10px 26px;
+    text-align: center;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.go:hover{
+    background-color: #B9D043;
+}
+
+.ask-question:hover{
+    background-color: #B9D043;
+}
+
+.rectangle-join-us{
+    width: 547.5640258789062;
+    height: 342;
+    position: relative;
+    bottom: 376px;
+    left: 620px;
+}
+
+.circles{
+    width: 177px;
+    height: 177px;
+    position: relative;
+    bottom: 511px;
+    left: 198px;
+}
+
+/* Popup стили */
+.popup {
+    position: fixed; /* Фиксированное позиционирование */
+    top: 0;
+    left: 0;
+    width: 100%; /* Ширина на весь экран */
+    height: 100%; /* Высота на весь экран */
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+    z-index: 1000; /* Поверх всего */
+    display: none; /* Скрыто по умолчанию */
+    overflow-y: auto;
+}
+
+.popup.show {
+    display: block; /* Отображаем окно */
+}
+
+.popup-content {
+    position: relative;
+    margin: 10% auto; /* Центрируем окно */
+    padding: 20px;
+    width: 80%;
+    max-width: 600px; /* Максимальная ширина контента */
+    background-color: #354751; /* Цвет фона контента */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: #ecf0f1; /* Цвет текста */
+    text-align: left; /* Выравниваем текст по левому краю */
+}
+
+.popup-content label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.popup-content input[type="email"],
+.popup-content textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #203541; /* Цвет фона полей ввода */
+    color: #ecf0f1; /* Цвет текста в полях ввода */
+}
+
+.popup-content button {
+    background-color: #B9D043; /* Цвет кнопки */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 86px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    display: block;
+    margin: 0 auto; /* Центрируем кнопку по горизонтали */
+}
+
+.popup-content button:hover {
+    background-color: #97b33a;
+}
+
+.close-button2 {
+    color: #aaa;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.close-button2:hover,
+.close-button2:focus {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.title-ask{
+    color:#B9D043;
+}
+
+/* Адаптивные стили */
+@media (max-width: 600px) {
+    .popup-content {
+        width: 95%;
+        margin: 20% auto;
+    }
+}
 
 
 
@@ -701,7 +898,7 @@
             </div>
             <div class="buttons">
                 <a id="my-qrcodes-button">Мои QR коды</a>
-                <a>Задать вопрос</a>
+                <a id="ask-question">Задать вопрос</a>
                 <a href="#" id="logout-button" class="logout-button">Выйти</a>
             </div>
         </div>
@@ -880,21 +1077,57 @@
         </div>
     </div>
 
+
+    <p class="services">Попробуйте все сервисы <img src="images/Clip path group.png" alt="Картинка" style="vertical-align: middle;"> <i>бесплатно</i></p>
+
+
+    <div id="join-us" class="join-us">
+        <img class="every-tech-pic" src="images//Clip path group.png" alt="qr-tech">
+        <div class="text-join-us">Объединяйте команды, переосмысливайте рабочие места, привлекайте новую аудиторию и радуйте своих клиентов — и все это на платформе, которую вы знаете и любите.</div>
+        <div class="buttons2">
+            <button class="go">Перейти</button>
+            <button class="ask-question">Задать вопрос</button>
+        </div>
+
+        <img class="rectangle-join-us" src="images/Rounded rectangle (1).png" alt="join-us">
+        <img class="circles" src="images/cardano-(ada).png" alt="">
+    </div>
+
+    <p class="services">Создайте свой продукт <i>вместе</i> с <img src="images/Clip path group.png" alt="Картинка" style="vertical-align: middle;"></p>
+
+    
+
     <div class="faq-section">
         <div class="faq-item">
-            <div class="faq-question">Как появились QR-коды?</div>
-            <div class="faq-answer hidden">QR-коды были разработаны в Японии в 1994 году компанией Denso Wave для отслеживания автозапчастей, а позже распространились в маркетинге, навигации и быстрой передаче информации.</div>
+            <div class="faq-question">Для чего нужны QR-коды?</div>
+            <div class="faq-answer hidden"><span class="green-text">QR — это двумерный штрихкод,</span> который считывается устройствами обработки изображений. В переводе с английского эта аббревиатура означает «быстрый отклик» (Quick Response). Главная особенность кода в том, что он предоставляет мгновенный доступ к большому объёму информации.</div>
+            
         </div>
         <div class="faq-item">
-            <div class="faq-question">Где применяются QR-коды?</div>
-            <div class="faq-answer hidden">QR-коды используют в рекламе, билетах, Wi-Fi, визитках, оплате и других цифровых сценариях. Они быстро считываются и передают данные через смартфон.</div>
+            <div class="faq-question">Как появились QR-коды?</div>
+            <div class="faq-answer hidden">Один из создателей штрихкода Норман Вудланд вдохновился идеей азбуки Морзе: он просто расширил привычные точки и тире, в результате чего появились узкие и широкие штрихи. Эта технология была придумана ещё в 1949 году, но использовать её стали только в конце 60-х годов прошлого столетия. Примерно в это же время появился первый сканер, позволяющий считывать такие метки, и тогда же был продан <span class="green-text">первый товар со штрихкодом — жвачка Wrigley.</span></div>
         </div>
     </div>
     
+
+        <!-- Popup окно для "Задать вопрос" -->
+    <div id="questionPopup" class="popup">
+        <div class="popup-content">
+            <span class="close-button2">&times;</span>
+            <h2 class="title-ask">Задать вопрос</h2>
+            <label for="email">Ваш Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="question">Ваш вопрос:</label>
+            <textarea id="question" name="question" rows="4" required></textarea>
+
+            <button id="sendQuestion">Отправить</button>
+        </div>
+    </div>
     
 
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
-    <script src="script.js"></script>
+    <script src="js/script.js"></script>
 </body>
 
 </html>
